@@ -1,0 +1,58 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "FastAPI App Monitoring",
+    "schemaVersion": 30,
+    "version": 1,
+    "panels": [
+      {
+        "type": "graph",
+        "title": "HTTP Request Latency",
+        "targets": [
+          {
+            "expr": "rate(request_processing_seconds_sum[1m]) / rate(request_processing_seconds_count[1m])",
+            "legendFormat": "Latency",
+            "refId": "A"
+          }
+        ],
+        "datasource": "Prometheus",
+        "yaxes": [
+          { "format": "s", "label": "Seconds" },
+          { "format": "short" }
+        ]
+      },
+      {
+        "type": "stat",
+        "title": "Application Status (Up)",
+        "targets": [
+          {
+            "expr": "up{job='app'}",
+            "refId": "B"
+          }
+        ],
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": 0 },
+                { "color": "green", "value": 1 }
+              ]
+            },
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "0": { "text": "DOWN" },
+                  "1": { "text": "UP" }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
+

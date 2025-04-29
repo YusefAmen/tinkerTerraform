@@ -1,0 +1,21 @@
+groups:
+  - name: sre-app-alerts
+    rules:
+      - alert: HighRequestLatency
+        expr: request_processing_seconds_sum / request_processing_seconds_count > 0.4
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Request Latency"
+          description: "The average HTTP request latency is greater than 400ms for 2 minutes."
+
+      - alert: AppDown
+        expr: up{job="app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Application Down"
+          description: "The FastAPI application is down."
+
